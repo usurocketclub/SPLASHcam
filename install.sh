@@ -17,8 +17,26 @@ sudo apt update
 
 #pip3 install tflite-runtime
 
+
 echo
-echo "!!!!!!!!!!!!!!!!!!!!!"
-echo "!! reboot required !!"
-echo "!!!!!!!!!!!!!!!!!!!!!"
+echo "Recompiling libcamera-app to add support for Pi Zero"
+echo
+
+sudo apt install -y libcamera-dev libjpeg-dev libtiff5-dev
+sudo apt install libavcodec-dev libavdevice-dev libavformat-dev libswresample-dev # ffmpeg encoding
+sudo apt install -y cmake libboost-program-options-dev libdrm-dev libexif-dev
+
+git clone https://github.com/raspberrypi/libcamera-apps.git
+cd libcamera-apps
+mkdir build
+cd build
+cmake .. -DENABLE_DRM=0 -DENABLE_X11=0 -DENABLE_QT=0 -DENABLE_OPENCV=0 -DENABLE_TFLITE=0
+make -j1  # use -j1 on Raspberry Pi 3 or earlier devices
+sudo make install
+sudo ldconfig # this is only necessary on the first build
+
+echo
+echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+echo "!! reboot may be required !!"
+echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 
