@@ -26,24 +26,5 @@ def still() -> None:
     cam.stop()
 
 
-def init_record() -> Picamera2:
-    """init_record"""
-    cam = Picamera2()
-    config = cam.create_video_configuration()
-    cam.configure(config)
-    cam.resolution = (640, 480)
-    cam.framerate = 32
-    return cam
-
-def record() -> None:
-    """record"""
-    cam = init_record()
-    encoder = H264Encoder(10000000)
-    output  = FfmpegOutput("test.mp4")
-    cam.start_recording(encoder, output)
-    time.sleep(5)
-    cam.stop_recording()
-
-
 if __name__ == '__main__':
-    record()
+    still()
