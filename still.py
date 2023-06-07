@@ -25,7 +25,7 @@ def still() -> None:
     print(f"{time.process_time()} sec")
     for i in range(10):
         cam.capture_file(f"test{i}.jpg")
-    print(f"{time.process_time()} sec")
+        print(f"Captured at {time.process_time()} sec")
     cam.stop()
 
 
