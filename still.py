@@ -22,10 +22,10 @@ def still() -> None:
     #np_array = cam.capture_array()
     #print(np_array)
     print("Capturing stills")
-    print(f"{time.process_time} sec")
+    print(f"{time.process_time()} sec")
     for i in range(10):
         cam.capture_file(f"test{i}.jpg")
-    print(f"{time.process_time} sec")
+    print(f"{time.process_time()} sec")
     cam.stop()
 
 
