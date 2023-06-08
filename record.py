@@ -1,49 +1,36 @@
 #!/usr/bin/env python3
 """record.py"""
 
-import time
-from picamera2 import Picamera2, Preview
-from picamera2.encoders import H264Encoder
-from picamera2.outputs import FfmpegOutput
+import signal
+import sys
+import subprocess
+import RPi.GPIO as GPIO
 
 
-def init_still() -> Picamera2:
-    """init_still"""
-    cam = Picamera2()
-    config = cam.create_still_configuration()
-    cam.configure(config)
-    return cam
+INTERRUPT_PIN = 4
 
-def still() -> None:
-    """still"""
-    cam = init_still()
-    cam.start()
-    print("Camera initialized")
-    #np_array = cam.capture_array()
-    #print(np_array)
-    print("Capturing still")
-    cam.start_and_capture_file("test.jpg")
-    cam.stop()
+TIMELAPSE_COMMAND="libcamera-still -t 60000 --timelapse 1 -o experiment%04d.jpeg"
 
 
-def init_record() -> Picamera2:
-    """init_record"""
-    cam = Picamera2()
-    config = cam.create_video_configuration()
-    cam.configure(config)
-    cam.resolution = (640, 480)
-    cam.framerate = 32
-    return cam
+def signal_handler():
+    """signal_handler"""
+    GPIO.cleanup()
+    sys.exit(0)
 
-def record() -> None:
-    """record"""
-    cam = init_record()
-    encoder = H264Encoder(10000000)
-    output  = FfmpegOutput("test.mp4")
-    cam.start_recording(encoder, output)
-    time.sleep(5)
-    cam.stop_recording()
+
+def interrupt_callback(channel):
+    """interrupt_callback"""
+    if GPIO.input(INTERRUPT_PIN):
+        print("recording started")
+        rval = subprocess.call(TIMELAPSE_COMMAND.split())
+        GPIO.cleanup()
+        sys.exit(rval)
 
 
 if __name__ == '__main__':
-    record()
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(INTERRUPT_PIN, GPIO.IN)
+    GPIO.add_event_callback(INTERRUPT_PIN, GPIO.RISING, callback=interrupt_callback)
+    signal.signal(signal.SIGINT, signal_handler)
+    signal.pause()
+    GPIO.cleanup()
