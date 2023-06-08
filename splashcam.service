@@ -5,7 +5,7 @@ Description=SPLASH Camera
 Type=simple
 User=pi
 WorkingDirectory=/home/pi/splash
-ExecStart=/home/pi/splash
+ExecStart=/home/pi/splash/record.py
 Restart=on-failure
 
 [Install]
