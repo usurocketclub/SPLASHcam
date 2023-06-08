@@ -23,6 +23,8 @@ def interrupt_callback(channel):
     if GPIO.input(INTERRUPT_PIN):
         print("recording started")
         rval = subprocess.call(TIMELAPSE_COMMAND.split())
+        print("timelapse complete")
+        print("exiting")
         GPIO.cleanup()
         sys.exit(rval)
 
@@ -31,6 +33,7 @@ if __name__ == '__main__':
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(INTERRUPT_PIN, GPIO.IN)
     GPIO.add_event_callback(INTERRUPT_PIN, GPIO.RISING, callback=interrupt_callback)
+    print("GPIO callback registered")
     signal.signal(signal.SIGINT, signal_handler)
     signal.pause()
     GPIO.cleanup()
