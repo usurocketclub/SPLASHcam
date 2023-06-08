@@ -32,7 +32,7 @@ def interrupt_callback(channel):
 if __name__ == '__main__':
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(INTERRUPT_PIN, GPIO.IN)
-    GPIO.add_event_callback(INTERRUPT_PIN, GPIO.RISING, callback=interrupt_callback)
+    GPIO.add_event_detect(INTERRUPT_PIN, GPIO.RISING, callback=interrupt_callback)
     print("GPIO callback registered")
     signal.signal(signal.SIGINT, signal_handler)
     signal.pause()
