@@ -1,0 +1,12 @@
+[Unit]
+Description=SPLASH Camera
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/splash
+ExecStart=/home/pi/splash
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
