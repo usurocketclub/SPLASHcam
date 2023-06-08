@@ -25,8 +25,6 @@ def interrupt_callback(channel):
         rval = subprocess.call(TIMELAPSE_COMMAND.split())
         print("timelapse complete")
         print("exiting")
-        GPIO.cleanup()
-        sys.exit(rval)
 
 
 if __name__ == '__main__':
