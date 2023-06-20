@@ -10,7 +10,7 @@ import RPi.GPIO as GPIO
 INTERRUPT_PIN = 4
 
 TIMELAPSE_COMMAND="libcamera-still -t 60000 --timelapse 1 -o experiment%04d.jpeg"
-VIDEO_COMMAND="libcamera-vid --mode 1920:1080 --width 640 --height 480 --framerate 120 --codec h264 --bitrate 50000000 --intra 1 -o experiment.h264 -t 5000 -n"
+VIDEO_COMMAND="libcamera-vid --mode 1920:1080 --width 640 --height 480 --framerate 120 --codec h264 --bitrate 50000000 --intra 1 --vflip --hflip --autofocus-mode manual --lens-position 5 -o experiment.h264 -t 10000 -n"
 
 
 def signal_handler():
